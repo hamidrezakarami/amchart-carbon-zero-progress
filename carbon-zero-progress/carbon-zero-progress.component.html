@@ -1,0 +1,7 @@
+<app-form></app-form>
+<app-chart-data [dataSource]="chartData"></app-chart-data>
+<app-chart
+  [data]="chartData"
+  [XYChart]="!test ? xyChart1 : xyChart2"
+  [label]="test"
+></app-chart>
