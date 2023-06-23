@@ -1,5 +1,23 @@
 <app-form></app-form>
-<app-chart-data [dataSource]="chartData"></app-chart-data>
+
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title> Edit Data </mat-panel-title>
+      <!-- <mat-panel-description>
+        This is a summary of the content
+      </mat-panel-description> -->
+    </mat-expansion-panel-header>
+    <app-chart-data
+      [dataSource]="chartData"
+      (addItem)="onAddItem($event)"
+      (deleteItem)="onDeleteItem($event)"
+      (editItem)="onEditItem($event)"
+      (currentBulletChanged)="currentBulletChanged($event)"
+      (targetBulletChanged)="targetBulletChanged($event)"
+    ></app-chart-data>
+  </mat-expansion-panel>
+</mat-accordion>
 <app-chart
   [data]="chartData"
   [XYChart]="!test ? xyChart1 : xyChart2"

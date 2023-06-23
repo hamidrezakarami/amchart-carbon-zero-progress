@@ -1,8 +1,35 @@
-<div class="mat-elevation-z8">
+<form [formGroup]="form" class="form">
+  <mat-form-field class="example-full-width">
+    <mat-label>Category</mat-label>
+    <input matInput formControlName="category" type="number" />
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <mat-label>Number</mat-label>
+    <input matInput formControlName="value" type="number" />
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [ngxMatColorPicker]="picker" formControlName="fill" />
+    <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
+    <ngx-mat-color-picker
+      #picker
+      [touchUi]="false"
+      [color]="color"
+    ></ngx-mat-color-picker>
+  </mat-form-field>
+  <button
+    (click)="selectedEditItem ? onSubmitEditItem() : onAddItem()"
+    mat-raised-button
+    color="primary"
+  >
+    {{ selectedEditItem ? "Edit" : "Add" }}
+  </button>
+  <div class="close-icon">
+    <mat-icon *ngIf="selectedEditItem" (click)="onCloseEditMode()">close</mat-icon>
+  </div>
+</form>
+
+<div class="data-table mat-elevation-z8">
   <table mat-table [dataSource]="dataSource">
-    <!--  
-  currentBullet?: boolean;
-  targetBullet?: boolean; -->
     <ng-container matColumnDef="category">
       <th mat-header-cell *matHeaderCellDef>category</th>
       <td mat-cell *matCellDef="let element">{{ element.category }}</td>
@@ -16,11 +43,50 @@
     <ng-container matColumnDef="fill">
       <th mat-header-cell *matHeaderCellDef>Fill</th>
       <td mat-cell *matCellDef="let element">
-        {{ element.columnSettings.fill }}
+        <div class="fill">
+          <div
+            class="circle"
+            [ngStyle]="{ background: element.columnSettings.fill }"
+          ></div>
+          {{ element.columnSettings.fill }}
+        </div>
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <ng-container matColumnDef="set">
+      <th mat-header-cell *matHeaderCellDef>Set as</th>
+      <td mat-cell *matCellDef="let element">
+        <div class="flex gap-8">
+          <div class="set-as-bullet">
+            <mat-icon *ngIf="element.currentBullet">check</mat-icon>
+          </div>
+          <button (click)="setAsCurrentBullet(element)" mat-button>
+            Current Bullet
+          </button>
+        </div>
+        <div class="flex gap-8">
+          <div class="set-as-bullet">
+            <mat-icon *ngIf="element.targetBullet">check</mat-icon>
+          </div>
+          <button (click)="setAsTargetBullet(element)" mat-button>
+            Target Bullet
+          </button>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element">
+        <button (click)="onDeleteItem(element)" mat-icon-button color="warn">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button (click)="onEditItem(element)" mat-icon-button color="primary">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 
