@@ -34,7 +34,7 @@ export class ChartDataComponent {
     if (this.form.valid) {
       this.addItem.emit({
         ...this.form.value,
-        columnSettings: { fill: this.form.value.fill.hex },
+        columnSettings: { fill: '#' + this.form.value.fill.hex },
         currentBullet: false,
         targetBullet: false,
       });
@@ -45,7 +45,7 @@ export class ChartDataComponent {
     if (this.form.valid && this.selectedEditItem) {
       const newItem = {
         ...this.form.value,
-        columnSettings: { fill: this.form.value.fill.hex },
+        columnSettings: { fill: '#' + this.form.value.fill.hex },
         currentBullet: false,
         targetBullet: false,
       };
