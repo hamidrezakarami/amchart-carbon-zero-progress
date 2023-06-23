@@ -20,6 +20,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatChipsModule } from '@angular/material/chips';
 
 import { CarbonZeroProgressRoutingModule } from './carbon-zero-progress-routing.module';
 import { CarbonZeroProgressComponent } from './carbon-zero-progress.component';
@@ -28,6 +29,7 @@ import {
   ChartComponent,
   ChartDataComponent,
 } from './components';
+import { AxisLabelFormComponent } from './components/axis-label-form/axis-label-form.component';
 
 const MATERIAL_MODUlES = [
   MatInputModule,
@@ -43,6 +45,7 @@ const MATERIAL_MODUlES = [
   MatCheckboxModule,
   MatButtonModule,
   MatIconModule,
+  MatChipsModule,
 ];
 
 @NgModule({
@@ -51,6 +54,7 @@ const MATERIAL_MODUlES = [
     FormComponent,
     ChartComponent,
     ChartDataComponent,
+    AxisLabelFormComponent,
   ],
   imports: [
     CommonModule,
