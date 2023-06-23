@@ -1,0 +1,43 @@
+.data-table {
+  overflow: auto;
+  height: 400px;
+}
+.form {
+  display: flex;
+  gap: 8px;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.fill {
+  display: flex;
+  gap: 8px;
+}
+
+.circle {
+  width: 16px;
+  height: 16px;
+  margin: auto 0;
+  border-radius: 50%;
+}
+
+.flex {
+  display: flex;
+}
+
+.gap-8 {
+  gap: 8px;
+}
+
+.set-as-bullet {
+  width: 12px;
+  margin: auto 0;
+  color: #6bc352;
+}
+
+.close-icon {
+  width: 12px;
+  mat-icon {
+    cursor: pointer;
+  }
+}
