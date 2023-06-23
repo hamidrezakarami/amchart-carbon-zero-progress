@@ -1,0 +1,51 @@
+<form [formGroup]="form" class="form">
+  <mat-form-field>
+    <mat-label>Category</mat-label>
+    <input matInput formControlName="category" type="text" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Text</mat-label>
+    <input matInput formControlName="text" type="text" />
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [ngxMatColorPicker]="picker" formControlName="fill" />
+    <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
+    <ngx-mat-color-picker
+      #picker
+      [touchUi]="false"
+      color="primary"
+    ></ngx-mat-color-picker>
+  </mat-form-field>
+  <button
+    (click)="selectedEditItem ? onSubmitEditItem() : onAddItem()"
+    mat-raised-button
+    color="primary"
+  >
+    {{ selectedEditItem ? "Edit" : "Add" }}
+  </button>
+  <div class="close-icon">
+    <mat-icon *ngIf="selectedEditItem" (click)="onCloseEditMode()"
+      >close</mat-icon
+    >
+  </div>
+</form>
+
+<mat-chip-grid #chipGrid>
+  <mat-chip-row
+    *ngFor="let axisLabel of axisLabels"
+    (removed)="onDeleteItem(axisLabel)"
+  >
+    <div class="chips-content">
+      Category: {{ axisLabel.category }}, Text: {{ axisLabel.text }},
+      <div *ngIf="axisLabel.fill" class="fill">
+        <div class="circle" [ngStyle]="{ background: axisLabel.fill }"></div>
+        fill: {{ axisLabel.fill }}
+      </div>
+
+      <mat-icon (click)="onEditItem(axisLabel)" color="primary">edit</mat-icon>
+      <button matChipRemove>
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </div>
+  </mat-chip-row>
+</mat-chip-grid>

@@ -6,7 +6,7 @@ import * as am5 from '@amcharts/amcharts5';
 import * as am5xy from '@amcharts/amcharts5/xy';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 
-import { ICarbonZeroProgress } from '../../interfaces';
+import { IAxisLabel, ICarbonZeroProgress } from '../../interfaces';
 import { IXYChartSettings } from '@amcharts/amcharts5/xy';
 
 @Component({
@@ -18,8 +18,18 @@ export class ChartComponent {
   @Input() set data(value: Array<ICarbonZeroProgress>) {
     this._data = value;
     if (this.chart) this.series.data.setAll(this._data);
-    // this.chart.series.setAll(value)
   }
+
+  @Input() set axisLabels(values: Array<IAxisLabel>) {
+    this._axisLabels = values;
+    if (this.xAxis) {
+      this.xAxis.axisRanges.clear();
+      values.forEach((value) =>
+        this.addAxisLabel(value.category, value.text, value.fill)
+      );
+    }
+  }
+
   @Input() XYChart: IXYChartSettings = {
     panX: false,
     panY: false,
@@ -48,7 +58,7 @@ export class ChartComponent {
     stroke: am5.color(0xffffff),
     templateField: 'columnSettings',
   };
-  
+
   @Input() set label(value: any) {
     Object.keys(value).forEach((key) => {
       console.error(key);
@@ -67,20 +77,21 @@ export class ChartComponent {
   series!: am5xy.ColumnSeries;
   xAxis!: am5xy.CategoryAxis<am5xy.AxisRenderer>;
   _data: Array<ICarbonZeroProgress> = [];
-  
+  _axisLabels: Array<IAxisLabel> = [];
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
     private zone: NgZone
-    ) {}
-    
-    // Run the function only in the browser
-    browserOnly(f: () => void) {
-      if (isPlatformBrowser(this.platformId)) {
-        this.zone.runOutsideAngular(() => {
-          f();
-        });
-      }
+  ) {}
+
+  // Run the function only in the browser
+  browserOnly(f: () => void) {
+    if (isPlatformBrowser(this.platformId)) {
+      this.zone.runOutsideAngular(() => {
+        f();
+      });
     }
+  }
 
   ngAfterViewInit() {
     let root = am5.Root.new('chartdiv');
@@ -218,26 +229,18 @@ export class ChartComponent {
     });
 
     this.series.data.setAll(this._data);
-
-    this.addAxisLabel('15', '20+');
-    this.addAxisLabel('10', '10');
-    this.addAxisLabel('5', '5');
-
+    this._axisLabels.forEach((item) =>
+      this.addAxisLabel(item.category, item.text)
+    );
     // Make stuff animate on load
     // https://www.amcharts.com/docs/v5/concepts/animations/
     this.series.appear(1000, 100);
     chart.appear(1000, 100);
     this.chart = chart;
-    console.log(this.chart);
-
-    setTimeout(() => {
-      // this.updateData(400);
-      console.error(this.chart);
-    }, 5000);
   }
 
   // Add labels
-  addAxisLabel(category: any, text: any) {
+  addAxisLabel(category: any, text: any, fill = 0x000000) {
     let rangeDataItem = this.xAxis.makeDataItem({
       category: category,
     });
@@ -245,13 +248,11 @@ export class ChartComponent {
     let range = this.xAxis.createAxisRange(rangeDataItem);
     if (range) {
       range.get('label')?.setAll({
-        //fill: am5.color(0xffffff),
+        fill: am5.color(fill),
         text: text,
         forceHidden: false,
       });
-
       range.get('grid')?.setAll({
-        //stroke: color,
         strokeOpacity: 1,
         location: 1,
       });

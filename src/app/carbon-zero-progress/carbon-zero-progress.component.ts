@@ -3,7 +3,12 @@ import { Component } from '@angular/core';
 import { IXYChartSettings } from '@amcharts/amcharts5/xy';
 
 import * as am5 from '@amcharts/amcharts5';
-import { ICarbonZeroProgress, IEditCarbonZeroProgress } from './interfaces';
+import {
+  IAxisLabel,
+  ICarbonZeroProgress,
+  IEditAxisLabel,
+  IEditCarbonZeroProgress,
+} from './interfaces';
 
 @Component({
   selector: 'app-carbon-zero-progress',
@@ -152,6 +157,13 @@ export class CarbonZeroProgressComponent {
       },
     },
   ];
+
+  axisLabels: Array<IAxisLabel> = [
+    { category: '15', text: '20+' },
+    { category: '10', text: '10' },
+    { category: '5', text: '5' },
+  ];
+
   constructor() {
     // setTimeout(() => {
     //   this.test = {
@@ -167,10 +179,10 @@ export class CarbonZeroProgressComponent {
     // }, 5000);
   }
 
-  onDeleteItem(item: ICarbonZeroProgress) {
+  onDeleteChartDataItem(item: ICarbonZeroProgress) {
     this.chartData = this.chartData.filter((el) => el !== item);
   }
-  onEditItem(item: IEditCarbonZeroProgress) {
+  onEditChartDataItem(item: IEditCarbonZeroProgress) {
     this.chartData = this.chartData.map((el) => {
       return el === item.oldItem ? item.newItem : el;
     });
@@ -190,7 +202,19 @@ export class CarbonZeroProgressComponent {
     });
   }
 
-  onAddItem(item: ICarbonZeroProgress) {
+  onAddChartDataItem(item: ICarbonZeroProgress) {
     this.chartData = [...this.chartData, item];
+  }
+
+  onAddAxisLabelItem(item: IAxisLabel) {
+    this.axisLabels = [...this.axisLabels, item];
+  }
+  onDeleteAxisLabelItem(item: IAxisLabel) {
+    this.axisLabels = this.axisLabels.filter((el) => el !== item);
+  }
+  onEditAxisLabelItem(item: IEditAxisLabel) {
+    this.axisLabels = this.axisLabels.map((el) => {
+      return el === item.oldItem ? item.newItem : el;
+    });
   }
 }
