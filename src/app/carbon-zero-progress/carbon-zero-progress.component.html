@@ -10,16 +10,30 @@
     </mat-expansion-panel-header>
     <app-chart-data
       [dataSource]="chartData"
-      (addItem)="onAddItem($event)"
-      (deleteItem)="onDeleteItem($event)"
-      (editItem)="onEditItem($event)"
+      (addItem)="onAddChartDataItem($event)"
+      (deleteItem)="onDeleteChartDataItem($event)"
+      (editItem)="onEditChartDataItem($event)"
       (currentBulletChanged)="currentBulletChanged($event)"
       (targetBulletChanged)="targetBulletChanged($event)"
     ></app-chart-data>
   </mat-expansion-panel>
 </mat-accordion>
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title> Edit AxisLabels </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-axis-label-form
+      [axisLabels]="axisLabels"
+      (addItem)="onAddAxisLabelItem($event)"
+      (deleteItem)="onDeleteAxisLabelItem($event)"
+      (editItem)="onEditAxisLabelItem($event)"
+    ></app-axis-label-form>
+  </mat-expansion-panel>
+</mat-accordion>
 <app-chart
   [data]="chartData"
+  [axisLabels]="axisLabels"
   [XYChart]="!test ? xyChart1 : xyChart2"
   [label]="test"
 ></app-chart>
