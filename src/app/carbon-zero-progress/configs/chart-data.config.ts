@@ -120,7 +120,7 @@ export const CHART_DATA: Array<ICarbonZeroProgress> = [
     value: 100,
     targetBullet: true,
     columnSettings: {
-      fill: am5.color(0xffffff),
+      fill: am5.color(0x6bc352),
     },
   },
 ];
