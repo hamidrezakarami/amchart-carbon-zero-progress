@@ -1,0 +1,59 @@
+<form [formGroup]="form" class="form">
+  <mat-form-field>
+    <mat-label>dy</mat-label>
+    <input matInput formControlName="dy" type="number" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Center Y(px)</mat-label>
+    <input matInput formControlName="centerY" type="number" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Center X(px)</mat-label>
+    <input matInput formControlName="centerX" type="number" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Padding Top</mat-label>
+    <input matInput formControlName="paddingTop" type="number" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Padding Right</mat-label>
+    <input matInput formControlName="paddingRight" type="number" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Padding Bottom</mat-label>
+    <input matInput formControlName="paddingBottom" type="number" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Padding Left</mat-label>
+    <input matInput formControlName="paddingLeft" type="number" />
+  </mat-form-field>
+  <mat-checkbox formControlName="panX">Has Pan X</mat-checkbox>
+  <mat-checkbox formControlName="panY">Has Pan Y</mat-checkbox>
+  <mat-form-field>
+    <mat-label>Wheel X</mat-label>
+    <mat-select
+      [value]="form.value.wheelX"
+      (valueChange)="valueChangeWheel('wheelX', $event)"
+      matNativeControl
+      required
+    >
+      <mat-option *ngFor="let item of wheelValues" [value]="item">
+        {{ item }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Wheel Y</mat-label>
+    <mat-select
+      [value]="form.value.wheelY"
+      (valueChange)="valueChangeWheel('wheelY', $event)"
+      matNativeControl
+      required
+    >
+      <mat-option *ngFor="let item of wheelValues" [value]="item">
+        {{ item }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button (click)="onApply()" mat-raised-button color="primary">Apply</button>
+</form>

@@ -1,0 +1,41 @@
+<form [formGroup]="form" class="form">
+  <mat-form-field>
+    <mat-label>Text</mat-label>
+    <input matInput formControlName="text" type="text" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Text Align</mat-label>
+    <mat-select
+      [value]="form.value.textAlign"
+      (valueChange)="valueChange($event)"
+      matNativeControl
+      required
+    >
+      <mat-option *ngFor="let item of textAlignValues" [value]="item.value">
+        {{ item.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Font Size(px)</mat-label>
+    <input matInput formControlName="fontSize" type="number" />
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [ngxMatColorPicker]="picker" formControlName="fill" />
+    <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
+    <ngx-mat-color-picker
+      #picker
+      [touchUi]="true"
+      color="primary"
+    ></ngx-mat-color-picker>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Center Y(px)</mat-label>
+    <input matInput formControlName="centerY" type="number" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Center X(px)</mat-label>
+    <input matInput formControlName="centerX" type="number" />
+  </mat-form-field>
+  <button (click)="onApply()" mat-raised-button color="primary">Apply</button>
+</form>

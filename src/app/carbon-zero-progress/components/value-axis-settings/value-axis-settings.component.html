@@ -1,0 +1,12 @@
+<form [formGroup]="form" class="form">
+  <mat-form-field>
+    <mat-label>Min</mat-label>
+    <input matInput formControlName="min" type="number" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Max</mat-label>
+    <input matInput formControlName="max" type="number" />
+  </mat-form-field>
+  <mat-checkbox formControlName="strictMinMax">Strict Min Max</mat-checkbox>
+  <button (click)="onApply()" mat-raised-button color="primary">Apply</button>
+</form>
