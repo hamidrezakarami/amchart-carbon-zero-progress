@@ -7,7 +7,7 @@ import * as am5xy from '@amcharts/amcharts5/xy';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 
 import { IAxisLabel, ICarbonZeroProgress } from '../../interfaces';
-import { IXYChartSettings } from '@amcharts/amcharts5/xy';
+import { CHART_VALUE_AXIS_SETTINGS } from '../../configs';
 
 @Component({
   selector: 'app-chart',
@@ -17,7 +17,11 @@ import { IXYChartSettings } from '@amcharts/amcharts5/xy';
 export class ChartComponent {
   @Input() set data(value: Array<ICarbonZeroProgress>) {
     this._data = value;
-    if (this.chart) this.series.data.setAll(this._data);
+    // TODO: fix bug
+    if (this.chart) {
+      this.series.data.setAll(this._data);
+      this.series.columns.template.setAll(this.columnsTemplate);
+    }
   }
 
   @Input() set axisLabels(values: Array<IAxisLabel>) {
@@ -25,24 +29,19 @@ export class ChartComponent {
     if (this.xAxis) {
       this.xAxis.axisRanges.clear();
       values.forEach((value) =>
-        this.addAxisLabel(value.category, value.text, value.fill)
+        this.addAxisLabel(value.category, value.text, value?.fill)
       );
     }
   }
 
-  @Input() XYChart: IXYChartSettings = {
-    panX: false,
-    panY: false,
-    wheelX: 'none',
-    wheelY: 'none',
-    paddingRight: 30,
-  };
   // TODO: type
-  @Input() ValueAxis = {
-    min: 0,
-    max: 400,
-    strictMinMax: true,
-  };
+  _valueAxis = CHART_VALUE_AXIS_SETTINGS;
+  @Input() set valueAxis(
+    settings: Partial<am5xy.IValueAxisSettings<am5xy.AxisRenderer>>
+  ) {
+    this._valueAxis = settings;
+    if (this.yAxis) this.yAxis.setAll(settings);
+  }
   // TODO: type
   @Input() columnSeries = {
     valueYField: 'value',
@@ -59,23 +58,20 @@ export class ChartComponent {
     templateField: 'columnSettings',
   };
 
-  @Input() set label(value: any) {
-    Object.keys(value).forEach((key) => {
-      console.error(key);
-      this.chart.set(key as keyof IXYChartSettings, value[key.toString()]);
-    });
+  @Input() set chartSettings(value: Partial<am5xy.IXYChartSettings>) {
+    this.XYChart = value;
+    this.chart.setAll(value);
+  }
+  targetLabel!: am5.Label;
+  @Input() set targetSettings(settings: Partial<am5.ILabelSettings>) {
+    if (this.targetLabel) this.targetLabel.setAll(settings);
   }
 
-  @Input() background: am5.IRoundedRectangleSettings = {
-    fill: am5.color(0xffffff),
-    cornerRadiusTL: 20,
-    cornerRadiusTR: 20,
-    cornerRadiusBR: 20,
-    cornerRadiusBL: 20,
-  };
   private chart!: am5xy.XYChart;
   series!: am5xy.ColumnSeries;
   xAxis!: am5xy.CategoryAxis<am5xy.AxisRenderer>;
+  yAxis!: am5xy.ValueAxis<am5xy.AxisRenderer>;
+  XYChart!: am5xy.IXYChartSettings;
   _data: Array<ICarbonZeroProgress> = [];
   _axisLabels: Array<IAxisLabel> = [];
 
@@ -132,14 +128,14 @@ export class ChartComponent {
 
     this.xAxis.data.setAll(this._data);
 
-    let yAxis = chart.yAxes.push(
+    this.yAxis = chart.yAxes.push(
       am5xy.ValueAxis.new(root, {
-        ...this.ValueAxis,
+        ...this._valueAxis,
         renderer: am5xy.AxisRendererY.new(root, {}),
       })
     );
 
-    let yRenderer = yAxis.get('renderer');
+    let yRenderer = this.yAxis.get('renderer');
 
     yRenderer.grid.template.set('forceHidden', true);
     yRenderer.labels.template.set('forceHidden', true);
@@ -150,13 +146,13 @@ export class ChartComponent {
     this.series = chart.series.push(
       am5xy.ColumnSeries.new(root, {
         xAxis: this.xAxis,
-        yAxis: yAxis,
+        yAxis: this.yAxis,
         ...this.columnSeries,
       })
     );
 
     this.series.columns.template.setAll(this.columnsTemplate);
-    this.series.bullets.push(function (root, target, dataItem) {
+    this.series.bullets.push((root, target, dataItem) => {
       let dataContext: any = dataItem.dataContext;
       if (dataContext?.currentBullet) {
         let container = am5.Container.new(root, {});
@@ -209,17 +205,18 @@ export class ChartComponent {
           })
         );
 
-        let label = container.children.push(
+        this.targetLabel = container.children.push(
           am5.Label.new(root, {
-            text: 'GOAL\n[bold]ZERO[/]',
-            textAlign: 'center',
-            //fontSize: "10",
+            text: '[bold]GOAL[/]',
+            textAlign: 'left',
+            fontSize: '18px',
             fill: am5.color(0xffffff),
             centerY: am5.p50,
             centerX: am5.p50,
             populateText: true,
           })
         );
+
         return am5.Bullet.new(root, {
           locationY: 0.5,
           sprite: container,
@@ -234,9 +231,9 @@ export class ChartComponent {
     );
     // Make stuff animate on load
     // https://www.amcharts.com/docs/v5/concepts/animations/
-    this.series.appear(1000, 100);
-    chart.appear(1000, 100);
     this.chart = chart;
+    this.series.appear(1000, 100);
+    this.chart.appear(1000, 100);
   }
 
   // Add labels
@@ -248,7 +245,7 @@ export class ChartComponent {
     let range = this.xAxis.createAxisRange(rangeDataItem);
     if (range) {
       range.get('label')?.setAll({
-        fill: am5.color(fill),
+        fill: am5.color(fill ?? 0x000000),
         text: text,
         forceHidden: false,
       });
