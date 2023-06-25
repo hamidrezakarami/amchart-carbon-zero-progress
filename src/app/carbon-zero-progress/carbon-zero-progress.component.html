@@ -1,5 +1,3 @@
-<app-form></app-form>
-
 <mat-accordion>
   <mat-expansion-panel>
     <mat-expansion-panel-header>
@@ -21,7 +19,7 @@
 <mat-accordion>
   <mat-expansion-panel>
     <mat-expansion-panel-header>
-      <mat-panel-title> Edit AxisLabels </mat-panel-title>
+      <mat-panel-title> Edit Axis Labels </mat-panel-title>
     </mat-expansion-panel-header>
     <app-axis-label-form
       [axisLabels]="axisLabels"
@@ -31,9 +29,43 @@
     ></app-axis-label-form>
   </mat-expansion-panel>
 </mat-accordion>
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title> Edit Target Bullet </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-target-settings
+      [targetSettings]="targetSettings"
+      (settingChanged)="targetSettings = $event"
+    ></app-target-settings>
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title> Edit Chart Settings </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-chart-settings
+      [chartSettings]="chartSettings"
+      (settingChanged)="chartSettings = $event"
+    ></app-chart-settings>
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title> Edit Value Axis Settings </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-value-axis-settings
+      [valueAxis]="valueAxis"
+      (settingChanged)="valueAxis = $event"
+    ></app-value-axis-settings>
+  </mat-expansion-panel>
+</mat-accordion>
 <app-chart
   [data]="chartData"
   [axisLabels]="axisLabels"
-  [XYChart]="!test ? xyChart1 : xyChart2"
-  [label]="test"
+  [chartSettings]="chartSettings"
+  [targetSettings]="targetSettings"
+  [valueAxis]="valueAxis"
 ></app-chart>
