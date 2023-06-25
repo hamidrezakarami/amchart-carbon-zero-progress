@@ -1,17 +1,22 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: "chart",
+    path: 'main',
     loadChildren: () =>
-      import("./carbon-zero-progress/carbon-zero-progress.module").then(
+      import('./main-page/main-page.module').then((m) => m.MainPageModule),
+  },
+  {
+    path: 'chart',
+    loadChildren: () =>
+      import('./carbon-zero-progress/carbon-zero-progress.module').then(
         (m) => m.CarbonZeroProgressModule
       ),
   },
   {
-    path: "**",
-    redirectTo: "chart",
+    path: '**',
+    redirectTo: 'main',
   },
 ];
 
