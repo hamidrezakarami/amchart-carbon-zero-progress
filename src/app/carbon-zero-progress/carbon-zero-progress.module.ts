@@ -25,11 +25,13 @@ import { MatChipsModule } from '@angular/material/chips';
 import { CarbonZeroProgressRoutingModule } from './carbon-zero-progress-routing.module';
 import { CarbonZeroProgressComponent } from './carbon-zero-progress.component';
 import {
-  FormComponent,
   ChartComponent,
   ChartDataComponent,
+  ChartSettingsComponent,
+  AxisLabelFormComponent,
+  TargetSettingsComponent,
 } from './components';
-import { AxisLabelFormComponent } from './components/axis-label-form/axis-label-form.component';
+import { ValueAxisSettingsComponent } from './components/value-axis-settings/value-axis-settings.component';
 
 const MATERIAL_MODUlES = [
   MatInputModule,
@@ -51,10 +53,12 @@ const MATERIAL_MODUlES = [
 @NgModule({
   declarations: [
     CarbonZeroProgressComponent,
-    FormComponent,
     ChartComponent,
     ChartDataComponent,
     AxisLabelFormComponent,
+    TargetSettingsComponent,
+    ChartSettingsComponent,
+    ValueAxisSettingsComponent,
   ],
   imports: [
     CommonModule,
